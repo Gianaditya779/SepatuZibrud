@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contact — sepatuzibrud</title>
+  <link rel="stylesheet" href="/css/style.css" />
+  <style>
+    .contact-page { padding: 140px 5% 100px; }
+
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: start;
+    }
+
+    .contact-info h1 {
+      font-size: clamp(2.5rem, 5vw, 3.5rem);
+      font-weight: 900;
+      letter-spacing: -2px;
+      margin-bottom: 16px;
+    }
+
+    .contact-info > p {
+      color: var(--gray-text);
+      font-size: 1rem;
+      line-height: 1.7;
+      margin-bottom: 48px;
+    }
+
+    .contact-card {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      padding: 24px;
+      background: var(--black-card);
+      border: 1px solid var(--gray-border);
+      border-radius: var(--radius-md);
+      margin-bottom: 16px;
+      transition: var(--transition);
+      text-decoration: none;
+      color: var(--white);
+    }
+
+    .contact-card:hover {
+      border-color: rgba(255,255,255,0.15);
+      transform: translateX(6px);
+    }
+
+    .contact-icon {
+      width: 52px; height: 52px;
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      font-size: 1.3rem;
+    }
+
+    .contact-icon.wa { background: rgba(37, 211, 102, 0.15); }
+    .contact-icon.ig { background: rgba(225, 48, 108, 0.15); }
+    .contact-icon.loc { background: rgba(255, 255, 255, 0.08); }
+
+    .contact-card-text h3 {
+      font-size: 0.95rem;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .contact-card-text p {
+      font-size: 0.8rem;
+      color: var(--gray-text);
+    }
+
+    .contact-card-arrow {
+      margin-left: auto;
+      color: var(--gray-text);
+      transition: var(--transition);
+    }
+
+    .contact-card:hover .contact-card-arrow {
+      color: var(--white);
+      transform: translateX(4px);
+    }
+
+    /* ── Map ── */
+    .map-wrap {
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      border: 1px solid var(--gray-border);
+      aspect-ratio: 4/3;
+      background: var(--black-card);
+      position: relative;
+    }
+
+    .map-wrap iframe {
+      width: 100%; height: 100%;
+      border: none;
+      filter: grayscale(100%) invert(90%) contrast(90%);
+    }
+
+    .map-placeholder {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      color: var(--gray-text);
+      font-size: 0.875rem;
+    }
+
+    /* ── Hours ── */
+    .hours-section {
+      margin-top: 48px;
+      padding: 32px;
+      background: var(--black-card);
+      border: 1px solid var(--gray-border);
+      border-radius: var(--radius-md);
+    }
+
+    .hours-section h3 {
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--gray-text);
+      margin-bottom: 20px;
+    }
+
+    .hours-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 0;
+      border-bottom: 1px solid var(--gray-border);
+      font-size: 0.875rem;
+    }
+
+    .hours-row:last-child { border-bottom: none; }
+    .hours-row span:first-child { color: var(--gray-text); }
+    .hours-row span:last-child { font-weight: 600; }
+
+    @media (max-width: 768px) {
+      .contact-grid { grid-template-columns: 1fr; gap: 48px; }
+      .contact-page { padding: 110px 5% 80px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar" id="navbar">
+    <a href="/" class="nav-logo">
+      <img src="/fotologosepatu.png" alt="Logo SepatuZibrud" style="width:38px;height:38px;object-fit:cover;border-radius:50%;border:2px solid rgba(255,255,255,0.15);" />
+      <span>sepatuzibrud</span><span class="dot">.</span></a>
+    <ul class="nav-links">
+      <li><a href="/">Home</a></li>
+      <li><a href="/catalog.html">Catalog</a></li>
+      <li><a href="/about.html">About</a></li>
+      <li><a href="/contact.html" class="active">Contact</a></li>
+      <li><a href="/admin.html">Admin</a></li>
+      <li><a href="/catalog.html" class="nav-cta">Lihat Koleksi</a></li>
+    </ul>
+    <div class="hamburger" id="hamburger"><span></span><span></span><span></span></div>
+  </nav>
+  <div class="mobile-nav" id="mobileNav">
+    <a href="/">Home</a>
+    <a href="/catalog.html">Catalog</a>
+    <a href="/about.html">About</a>
+    <a href="/contact.html">Contact</a>
+    <a href="/admin.html">Admin</a>
+  </div>
+
+  <div class="contact-page">
+    <div class="contact-grid">
+
+      <!-- Info -->
+      <div class="contact-info">
+        <div class="section-label">Hubungi Kami</div>
+        <h1>Let's Talk<br>Sneakers</h1>
+        <p>Ada pertanyaan tentang produk? Ingin tahu stok terbaru? Atau sekadar ngobrol soal sneakers? Kami siap membantu.</p>
+
+        <a href="https://wa.me/6281234567890?text=Halo%20admin%20SOLE%2C%20saya%20ingin%20bertanya%20tentang%20produk" target="_blank" class="contact-card">
+          <div class="contact-icon wa">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="#25D366"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          </div>
+          <div class="contact-card-text">
+            <h3>WhatsApp Admin</h3>
+            <p>+62 812-3456-7890 · Respon cepat</p>
+          </div>
+          <svg class="contact-card-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
+
+        <a href="https://instagram.com/sepatu_zibrud" target="_blank" class="contact-card">
+          <div class="contact-icon ig">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="#E1306C"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+          </div>
+          <div class="contact-card-text">
+            <h3>Instagram</h3>
+            <p>@sepatu_zibrud.sneakers · Update koleksi terbaru</p>
+          </div>
+          <svg class="contact-card-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
+
+        <div class="contact-card" style="cursor:default">
+          <div class="contact-icon loc">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--gray-light)" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          </div>
+          <div class="contact-card-text">
+            <h3>Lokasi Toko</h3>
+            <p>Green City Residence, Jl. KH. Wahid Hasyim 2 Blok.C9, Sempaja Utara, Samarinda</p>
+          </div>
+        </div>
+
+        <!-- Jam Operasional -->
+        <div class="hours-section">
+          <h3>Jam Operasional</h3>
+          <div class="hours-row">
+            <span>Senin – Jumat</span>
+            <span>09:00 – 21:00</span>
+          </div>
+          <div class="hours-row">
+            <span>Sabtu – Minggu</span>
+            <span>10:00 – 22:00</span>
+          </div>
+          <div class="hours-row">
+            <span>WhatsApp</span>
+            <span style="color:var(--green)">24/7 Online</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Map -->
+      <div>
+        <div class="map-wrap">
+          <!-- Google Maps embed - ganti src dengan koordinat toko Anda -->
+          <iframe
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3989.702946833205!2d117.14681447496459!3d-0.43572769955999585!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2df679a37b4b813d%3A0x86c4fb1718cf865d!2sPerum%20Green%20City%20Residence!5e0!3m2!1sen!2sid!4v1775096098340!5m2!1sen!2sid"
+            allowfullscreen=""
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+            title="Lokasi Toko sepatuzibrud">
+          </iframe>
+        </div>
+
+        <div style="margin-top:24px; padding:24px; background:var(--black-card); border:1px solid var(--gray-border); border-radius:var(--radius-md)">
+          <p style="font-size:0.875rem; color:var(--gray-text); line-height:1.7">
+            📍 <strong style="color:var(--white)">sepatuzibrud Sneaker Store</strong><br>
+            Samarinda<br>
+            <br>
+            Kalimantan Timur, Indonesia
+          </p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <script src="/js/script.js"></script>
+</body>
+</html>

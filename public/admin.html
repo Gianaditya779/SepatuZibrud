@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Panel — sepatuzibrud</title>
+  <link rel="stylesheet" href="/css/style.css" />
+  <style>
+    /* ── Login Screen ── */
+    .login-screen {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .login-card {
+      background: var(--black-card);
+      border: 1px solid var(--gray-border);
+      border-radius: var(--radius-xl);
+      padding: 48px;
+      width: 100%;
+      max-width: 420px;
+    }
+
+    .login-card .logo {
+      font-size: 1.8rem;
+      font-weight: 900;
+      letter-spacing: -1px;
+      margin-bottom: 8px;
+    }
+
+    .login-card .logo span { color: var(--gray-text); }
+
+    .login-card p {
+      color: var(--gray-text);
+      font-size: 0.875rem;
+      margin-bottom: 36px;
+    }
+
+    .form-group { margin-bottom: 20px; }
+
+    .form-label {
+      display: block;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--gray-text);
+      margin-bottom: 8px;
+    }
+
+    .form-input {
+      width: 100%;
+      padding: 12px 16px;
+      background: var(--gray-dark);
+      border: 1px solid var(--gray-border);
+      border-radius: var(--radius-sm);
+      color: var(--white);
+      font-size: 0.9rem;
+      transition: var(--transition);
+    }
+
+    .form-input:focus {
+      border-color: rgba(255,255,255,0.3);
+      background: var(--gray-mid);
+    }
+
+    .form-input::placeholder { color: var(--gray-text); }
+
+    .form-input[type="file"] {
+      padding: 10px 16px;
+      cursor: pointer;
+    }
+
+    textarea.form-input {
+      resize: vertical;
+      min-height: 100px;
+    }
+
+    select.form-input {
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23888' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 14px center;
+      padding-right: 36px;
+    }
+
+    select.form-input option { background: var(--black-card); }
+
+    .btn-submit {
+      width: 100%;
+      padding: 14px;
+      background: var(--white);
+      color: var(--black);
+      border: none;
+      border-radius: var(--radius-sm);
+      font-size: 0.9rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: var(--transition);
+      margin-top: 8px;
+    }
+
+    .btn-submit:hover { background: var(--accent); transform: translateY(-1px); }
+    .btn-submit:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+    .error-msg {
+      color: var(--red);
+      font-size: 0.8rem;
+      margin-top: 12px;
+      text-align: center;
+    }
+
+    /* ── Admin Dashboard ── */
+    .admin-layout { display: none; min-height: 100vh; }
+
+    .admin-sidebar {
+      position: fixed;
+      top: 0; left: 0;
+      width: 240px; height: 100vh;
+      background: var(--black-soft);
+      border-right: 1px solid var(--gray-border);
+      padding: 32px 20px;
+      display: flex;
+      flex-direction: column;
+      z-index: 100;
+    }
+
+    .admin-logo {
+      font-size: 1.3rem;
+      font-weight: 900;
+      letter-spacing: -0.5px;
+      margin-bottom: 8px;
+    }
+
+    .admin-logo span { color: var(--gray-text); }
+
+    .admin-role {
+      font-size: 0.7rem;
+      color: var(--gray-text);
+      font-weight: 600;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-bottom: 40px;
+    }
+
+    .sidebar-nav { flex: 1; }
+
+    .sidebar-link {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 14px;
+      border-radius: var(--radius-sm);
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: var(--gray-text);
+      cursor: pointer;
+      transition: var(--transition);
+      margin-bottom: 4px;
+      border: none;
+      background: none;
+      width: 100%;
+      text-align: left;
+    }
+
+    .sidebar-link:hover, .sidebar-link.active {
+      background: var(--gray-dark);
+      color: var(--white);
+    }
+
+    .sidebar-logout {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 14px;
+      border-radius: var(--radius-sm);
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: var(--red);
+      cursor: pointer;
+      transition: var(--transition);
+      border: none;
+      background: none;
+      width: 100%;
+      text-align: left;
+    }
+
+    .sidebar-logout:hover { background: rgba(255,68,68,0.1); }
+
+    .admin-main {
+      margin-left: 240px;
+      padding: 40px;
+      min-height: 100vh;
+    }
+
+    .admin-topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 40px;
+    }
+
+    .admin-topbar h1 {
+      font-size: 1.5rem;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+    }
+
+    /* ── Stats Cards ── */
+    .admin-stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-bottom: 40px;
+    }
+
+    .admin-stat-card {
+      background: var(--black-card);
+      border: 1px solid var(--gray-border);
+      border-radius: var(--radius-md);
+      padding: 24px;
+    }
+
+    .admin-stat-card .label {
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--gray-text);
+      margin-bottom: 8px;
+    }
+
+    .admin-stat-card .value {
+      font-size: 2rem;
+      font-weight: 800;
+      letter-spacing: -1px;
+    }
+
+    /* ── Product Table ── */
+    .admin-card {
+      background: var(--black-card);
+      border: 1px solid var(--gray-border);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+    }
+
+    .admin-card-header {
+      padding: 20px 24px;
+      border-bottom: 1px solid var(--gray-border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .admin-card-header h2 {
+      font-size: 1rem;
+      font-weight: 700;
+    }
+
+    .product-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .product-table th {
+      padding: 12px 16px;
+      text-align: left;
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--gray-text);
+      border-bottom: 1px solid var(--gray-border);
+    }
+
+    .product-table td {
+      padding: 14px 16px;
+      font-size: 0.875rem;
+      border-bottom: 1px solid rgba(46,46,46,0.5);
+      vertical-align: middle;
+    }
+
+    .product-table tr:last-child td { border-bottom: none; }
+
+    .product-table tr:hover td { background: rgba(255,255,255,0.02); }
+
+    .table-img {
+      width: 48px; height: 48px;
+      border-radius: var(--radius-sm);
+      object-fit: cover;
+      border: 1px solid var(--gray-border);
+    }
+
+    .table-actions {
+      display: flex;
+      gap: 8px;
+    }
+
+    .btn-action {
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition);
+      border: 1px solid var(--gray-border);
+      background: var(--gray-dark);
+      color: var(--white);
+    }
+
+    .btn-action:hover { background: var(--gray-mid); }
+    .btn-action.danger { color: var(--red); border-color: rgba(255,68,68,0.3); }
+    .btn-action.danger:hover { background: rgba(255,68,68,0.1); }
+    .btn-action.success { color: var(--green); border-color: rgba(34,197,94,0.3); }
+    .btn-action.success:hover { background: rgba(34,197,94,0.1); }
+
+    /* ── Add Product Form ── */
+    .add-form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      padding: 24px;
+    }
+
+    .form-full { grid-column: 1 / -1; }
+
+    .sizes-checkboxes {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .size-check {
+      display: none;
+    }
+
+    .size-check-label {
+      padding: 6px 14px;
+      background: var(--gray-dark);
+      border: 1px solid var(--gray-border);
+      border-radius: 6px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition);
+      user-select: none;
+    }
+
+    .size-check:checked + .size-check-label {
+      background: var(--white);
+      color: var(--black);
+      border-color: var(--white);
+    }
+
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 3px 10px;
+      border-radius: 100px;
+      font-size: 0.7rem;
+      font-weight: 700;
+    }
+
+    .status-available {
+      background: rgba(34,197,94,0.1);
+      color: var(--green);
+      border: 1px solid rgba(34,197,94,0.3);
+    }
+
+    .status-sold {
+      background: rgba(255,68,68,0.1);
+      color: var(--red);
+      border: 1px solid rgba(255,68,68,0.3);
+    }
+
+    /* ── Tabs ── */
+    .admin-tabs {
+      display: flex;
+      gap: 4px;
+      margin-bottom: 32px;
+      background: var(--black-card);
+      border: 1px solid var(--gray-border);
+      border-radius: var(--radius-md);
+      padding: 4px;
+      width: fit-content;
+    }
+
+    .admin-tab {
+      padding: 8px 20px;
+      border-radius: 10px;
+      font-size: 0.875rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition);
+      border: none;
+      background: none;
+      color: var(--gray-text);
+    }
+
+    .admin-tab.active {
+      background: var(--white);
+      color: var(--black);
+    }
+
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+
+    /* ── Image preview ── */
+    .img-preview-wrap {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 8px;
+    }
+
+    .img-preview {
+      width: 80px; height: 80px;
+      border-radius: var(--radius-sm);
+      object-fit: cover;
+      border: 1px solid var(--gray-border);
+    }
+
+    @media (max-width: 1024px) {
+      .admin-stats { grid-template-columns: 1fr 1fr; }
+    }
+
+    @media (max-width: 768px) {
+      .admin-sidebar { display: none; }
+      .admin-main { margin-left: 0; padding: 20px; }
+      .add-form-grid { grid-template-columns: 1fr; }
+      .admin-stats { grid-template-columns: 1fr 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── Login Screen ── -->
+  <div class="login-screen" id="loginScreen">
+    <div class="login-card">
+      <div class="logo"><span>sepatuzibrud</span>.</div>
+      <p>Admin Panel — Masuk untuk mengelola produk</p>
+
+      <div class="form-group">
+        <label class="form-label" for="adminPassword">Password Admin</label>
+        <input type="password" class="form-input" id="adminPassword" placeholder="Masukkan password..." />
+      </div>
+
+      <button class="btn-submit" id="loginBtn" onclick="doLogin()">Masuk</button>
+      <div class="error-msg" id="loginError"></div>
+    </div>
+  </div>
+
+  <!-- ── Admin Dashboard ── -->
+  <div class="admin-layout" id="adminLayout">
+
+    <!-- Sidebar -->
+    <aside class="admin-sidebar">
+      <div class="admin-logo"><span>sepatuzibrud</span>.</div>
+      <div class="admin-role">Admin Panel</div>
+
+      <nav class="sidebar-nav">
+        <button class="sidebar-link active" onclick="switchTab('dashboard', this)">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+          Dashboard
+        </button>
+        <button class="sidebar-link" onclick="switchTab('products', this)">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+          Produk
+        </button>
+        <button class="sidebar-link" onclick="switchTab('add', this)">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+          Tambah Produk
+        </button>
+        <a href="/" target="_blank" class="sidebar-link">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          Lihat Website
+        </a>
+      </nav>
+
+      <button class="sidebar-logout" onclick="doLogout()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+        Logout
+      </button>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="admin-main">
+
+      <!-- Dashboard Tab -->
+      <div class="tab-content active" id="tab-dashboard">
+        <div class="admin-topbar">
+          <h1>Dashboard</h1>
+          <span style="font-size:0.8rem; color:var(--gray-text)" id="dateDisplay"></span>
+        </div>
+
+        <div class="admin-stats" id="adminStats">
+          <div class="admin-stat-card"><div class="label">Total Produk</div><div class="value" id="statTotal">—</div></div>
+          <div class="admin-stat-card"><div class="label">Tersedia</div><div class="value" id="statAvailable" style="color:var(--green)">—</div></div>
+          <div class="admin-stat-card"><div class="label">Sold Out</div><div class="value" id="statSold" style="color:var(--red)">—</div></div>
+          <div class="admin-stat-card"><div class="label">Kondisi Baru</div><div class="value" id="statNew">—</div></div>
+        </div>
+
+        <div class="admin-card">
+          <div class="admin-card-header">
+            <h2>Produk Terbaru</h2>
+            <button class="btn-action" onclick="switchTab('products', document.querySelector('.sidebar-link:nth-child(2)'))">Lihat Semua</button>
+          </div>
+          <div style="overflow-x:auto">
+            <table class="product-table" id="recentTable">
+              <thead>
+                <tr>
+                  <th>Gambar</th>
+                  <th>Nama</th>
+                  <th>Brand</th>
+                  <th>Harga</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody id="recentTableBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- Products Tab -->
+      <div class="tab-content" id="tab-products">
+        <div class="admin-topbar">
+          <h1>Semua Produk</h1>
+          <button class="btn btn-primary" style="padding:10px 20px; font-size:0.85rem" onclick="switchTab('add', document.querySelector('.sidebar-link:nth-child(3)'))">+ Tambah Produk</button>
+        </div>
+
+        <div class="admin-card">
+          <div style="overflow-x:auto">
+            <table class="product-table" id="allProductsTable">
+              <thead>
+                <tr>
+                  <th>Gambar</th>
+                  <th>Nama</th>
+                  <th>Brand</th>
+                  <th>Harga</th>
+                  <th>Kondisi</th>
+                  <th>Status</th>
+                  <th>Aksi</th>
+                </tr>
+              </thead>
+              <tbody id="allProductsBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- Add Product Tab -->
+      <div class="tab-content" id="tab-add">
+        <div class="admin-topbar">
+          <h1 id="formTitle">Tambah Produk</h1>
+        </div>
+
+        <div class="admin-card">
+          <form id="productForm" onsubmit="submitProduct(event)">
+            <input type="hidden" id="editProductId" />
+            <div class="add-form-grid">
+              <div class="form-group">
+                <label class="form-label">Nama Sepatu *</label>
+                <input type="text" class="form-input" id="fieldName" placeholder="Contoh: Nike Air Max 270" required />
+              </div>
+              <div class="form-group">
+                <label class="form-label">Brand *</label>
+                <input type="text" class="form-input" id="fieldBrand" placeholder="Contoh: Nike" required />
+              </div>
+              <div class="form-group">
+                <label class="form-label">Harga (Rp) *</label>
+                <input type="number" class="form-input" id="fieldPrice" placeholder="Contoh: 1500000" required min="0" />
+              </div>
+              <div class="form-group">
+                <label class="form-label">Kondisi *</label>
+                <select class="form-input" id="fieldCondition" required>
+                  <option value="">Pilih kondisi...</option>
+                  <option value="baru">Baru</option>
+                  <option value="bekas">Bekas</option>
+                </select>
+              </div>
+              <div class="form-group form-full">
+                <label class="form-label">Ukuran Tersedia *</label>
+                <div class="sizes-checkboxes">
+                  <input type="checkbox" class="size-check" id="s37" value="37"><label class="size-check-label" for="s37">37</label>
+                  <input type="checkbox" class="size-check" id="s38" value="38"><label class="size-check-label" for="s38">38</label>
+                  <input type="checkbox" class="size-check" id="s39" value="39"><label class="size-check-label" for="s39">39</label>
+                  <input type="checkbox" class="size-check" id="s40" value="40"><label class="size-check-label" for="s40">40</label>
+                  <input type="checkbox" class="size-check" id="s41" value="41"><label class="size-check-label" for="s41">41</label>
+                  <input type="checkbox" class="size-check" id="s42" value="42"><label class="size-check-label" for="s42">42</label>
+                  <input type="checkbox" class="size-check" id="s43" value="43"><label class="size-check-label" for="s43">43</label>
+                  <input type="checkbox" class="size-check" id="s44" value="44"><label class="size-check-label" for="s44">44</label>
+                  <input type="checkbox" class="size-check" id="s45" value="45"><label class="size-check-label" for="s45">45</label>
+                </div>
+              </div>
+              <div class="form-group form-full">
+                <label class="form-label">Deskripsi</label>
+                <textarea class="form-input" id="fieldDesc" placeholder="Deskripsi produk..."></textarea>
+              </div>
+              <div class="form-group form-full">
+                <label class="form-label">Upload Gambar (maks. 5 foto)</label>
+                <input type="file" class="form-input" id="fieldImages" accept="image/*" multiple onchange="previewImages(this)" />
+                <div class="img-preview-wrap" id="imgPreviewWrap"></div>
+              </div>
+              <div class="form-group form-full" style="display:flex; gap:12px">
+                <button type="submit" class="btn-submit" id="submitBtn" style="flex:1">Simpan Produk</button>
+                <button type="button" class="btn-submit" style="flex:0.3; background:var(--gray-dark); color:var(--white)" onclick="resetForm()">Reset</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+
+    </main>
+  </div>
+
+  <script src="/js/script.js"></script>
+  <script src="/admin.js"></script>
+</body>
+</html>

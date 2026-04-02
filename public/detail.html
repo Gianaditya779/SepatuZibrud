@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Detail Produk — SepatuZibrud</title>
+  <link rel="stylesheet" href="/css/style.css" />
+  <!-- html2canvas untuk screenshot -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <style>
+    .detail-page { padding: 110px 5% 100px; }
+
+    .back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--gray-text);
+      font-size: 0.875rem;
+      font-weight: 500;
+      margin-bottom: 40px;
+      transition: var(--transition);
+    }
+
+    .back-btn:hover { color: var(--white); }
+
+    .detail-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      align-items: start;
+    }
+
+    /* ── Gallery ── */
+    .gallery { position: sticky; top: 90px; }
+
+    .main-image {
+      aspect-ratio: 1;
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      background: var(--black-card);
+      border: 1px solid var(--gray-border);
+      margin-bottom: 16px;
+      position: relative;
+    }
+
+    .main-image img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s ease;
+    }
+
+    .main-image:hover img { transform: scale(1.04); }
+
+    .thumb-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+    }
+
+    .thumb {
+      aspect-ratio: 1;
+      border-radius: var(--radius-sm);
+      overflow: hidden;
+      background: var(--black-card);
+      border: 2px solid transparent;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .thumb:hover, .thumb.active { border-color: var(--white); }
+
+    .thumb img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+    }
+
+    /* ── Product Info ── */
+    .product-info { padding-top: 8px; }
+
+    .detail-brand {
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      color: var(--gray-text);
+      margin-bottom: 10px;
+    }
+
+    .detail-name {
+      font-size: clamp(1.8rem, 3vw, 2.5rem);
+      font-weight: 900;
+      letter-spacing: -1px;
+      line-height: 1.1;
+      margin-bottom: 20px;
+    }
+
+    .detail-price {
+      font-size: 2rem;
+      font-weight: 800;
+      letter-spacing: -1px;
+      margin-bottom: 28px;
+    }
+
+    .detail-divider {
+      height: 1px;
+      background: var(--gray-border);
+      margin: 28px 0;
+    }
+
+    .detail-label {
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--gray-text);
+      margin-bottom: 12px;
+    }
+
+    .sizes-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 28px;
+    }
+
+    .size-btn {
+      width: 48px; height: 48px;
+      border-radius: var(--radius-sm);
+      background: var(--black-card);
+      border: 1px solid var(--gray-border);
+      color: var(--white);
+      font-size: 0.875rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .size-btn:hover, .size-btn.selected {
+      background: var(--white);
+      color: var(--black);
+      border-color: var(--white);
+    }
+
+    .condition-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 16px;
+      border-radius: 100px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      margin-bottom: 28px;
+    }
+
+    .condition-badge.baru {
+      background: rgba(34, 197, 94, 0.1);
+      border: 1px solid rgba(34, 197, 94, 0.3);
+      color: var(--green);
+    }
+
+    .condition-badge.bekas {
+      background: rgba(255, 165, 0, 0.1);
+      border: 1px solid rgba(255, 165, 0, 0.3);
+      color: orange;
+    }
+
+    .detail-desc {
+      font-size: 0.9rem;
+      color: var(--gray-text);
+      line-height: 1.8;
+      margin-bottom: 32px;
+    }
+
+    .action-buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .btn-screenshot {
+      background: var(--white);
+      color: var(--black);
+      padding: 16px 32px;
+      border-radius: 100px;
+      font-size: 0.95rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      transition: var(--transition);
+      border: none;
+      cursor: pointer;
+      width: 100%;
+    }
+
+    .btn-screenshot:hover {
+      background: var(--accent);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(255,255,255,0.15);
+    }
+
+    .btn-screenshot:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .sold-out-banner {
+      background: rgba(255, 68, 68, 0.1);
+      border: 1px solid rgba(255, 68, 68, 0.3);
+      border-radius: var(--radius-md);
+      padding: 16px 20px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      color: var(--red);
+      font-size: 0.9rem;
+      font-weight: 600;
+      margin-bottom: 16px;
+    }
+
+    /* ── Related Products ── */
+    .related-section { padding: 80px 5% 100px; border-top: 1px solid var(--gray-border); }
+
+    /* ── Loading state ── */
+    .detail-loading {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 60vh;
+      flex-direction: column;
+      gap: 16px;
+      color: var(--gray-text);
+    }
+
+    .loading-spinner {
+      width: 40px; height: 40px;
+      border: 2px solid var(--gray-border);
+      border-top-color: var(--white);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    @media (max-width: 768px) {
+      .detail-grid { grid-template-columns: 1fr; gap: 32px; }
+      .gallery { position: static; }
+      .detail-page { padding: 90px 5% 80px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar" id="navbar">
+    <a href="/" class="nav-logo">
+      <img src="/fotologosepatu.png" alt="Logo SepatuZibrud" style="width:38px;height:38px;object-fit:cover;border-radius:50%;border:2px solid rgba(255,255,255,0.15);" />
+      <span>SepatuZibrud</span><span class="dot">.</span></a>
+    <ul class="nav-links">
+      <li><a href="/">Home</a></li>
+      <li><a href="/catalog.html" class="active">Catalog</a></li>
+      <li><a href="/about.html">About</a></li>
+      <li><a href="/contact.html">Contact</a></li>
+      <li><a href="/admin.html">Admin</a></li>
+      <li><a href="/catalog.html" class="nav-cta">Lihat Koleksi</a></li>
+    </ul>
+    <div class="hamburger" id="hamburger"><span></span><span></span><span></span></div>
+  </nav>
+  <div class="mobile-nav" id="mobileNav">
+    <a href="/">Home</a>
+    <a href="/catalog.html">Catalog</a>
+    <a href="/about.html">About</a>
+    <a href="/contact.html">Contact</a>
+    <a href="/admin.html">Admin</a>
+  </div>
+
+  <!-- Detail Page -->
+  <div class="detail-page">
+    <a href="/catalog.html" class="back-btn">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+      Kembali ke Katalog
+    </a>
+
+    <!-- Loading state -->
+    <div class="detail-loading" id="loadingState">
+      <div class="loading-spinner"></div>
+      <p>Memuat produk...</p>
+    </div>
+
+    <!-- Product Detail (hidden until loaded) -->
+    <div id="productDetail" style="display:none">
+      <div class="detail-grid">
+        <!-- Gallery -->
+        <div class="gallery">
+          <div class="main-image" id="mainImageWrap">
+            <img id="mainImage" src="" alt="Produk" />
+          </div>
+          <div class="thumb-grid" id="thumbGrid"></div>
+        </div>
+
+        <!-- Info -->
+        <div class="product-info">
+          <div class="detail-brand" id="detailBrand"></div>
+          <h1 class="detail-name" id="detailName"></h1>
+          <div class="detail-price" id="detailPrice"></div>
+
+          <div id="conditionBadge"></div>
+
+          <div class="detail-divider"></div>
+
+          <div class="detail-label">Ukuran Tersedia</div>
+          <div class="sizes-grid" id="sizesGrid"></div>
+
+          <div class="detail-label">Deskripsi</div>
+          <p class="detail-desc" id="detailDesc"></p>
+
+          <div class="detail-divider"></div>
+
+          <!-- Sold out banner -->
+          <div class="sold-out-banner" id="soldOutBanner" style="display:none">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+            Produk ini sudah terjual habis
+          </div>
+
+          <!-- Action buttons -->
+          <div class="action-buttons">
+            <button class="btn-screenshot" id="screenshotBtn" onclick="handleScreenshot()">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z"/>
+                <circle cx="12" cy="13" r="4"/>
+              </svg>
+              TAKE SCREENSHOT & Hubungi Admin
+            </button>
+            <a href="#" id="waDirectBtn" target="_blank" class="btn btn-outline" style="width:100%; justify-content:center">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+              Chat WhatsApp Langsung
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Related Products -->
+  <div class="related-section" id="relatedSection" style="display:none">
+    <div class="section-label">Produk Lainnya</div>
+    <h2 class="section-title" style="margin-bottom:40px">Mungkin Kamu Suka</h2>
+    <div class="products-grid" id="relatedGrid"></div>
+  </div>
+
+  <script src="/js/script.js"></script>
+  <script src="/js/screenshot.js"></script>
+  <script>
+    let currentProduct = null;
+
+    // ─── Load product detail ───────────────────────────────────
+    async function loadDetail() {
+      const id = new URLSearchParams(window.location.search).get('id');
+      if (!id) { window.location.href = '/catalog.html'; return; }
+
+      try {
+        const res = await fetch(`/api/products/${id}`);
+        if (!res.ok) throw new Error('Not found');
+        currentProduct = await res.json();
+        renderDetail(currentProduct);
+        loadRelated(currentProduct.brand, id);
+      } catch (e) {
+        document.getElementById('loadingState').innerHTML = `
+          <p style="color:var(--gray-text)">Produk tidak ditemukan.</p>
+          <a href="/catalog.html" class="btn btn-outline" style="margin-top:16px">Kembali ke Katalog</a>
+        `;
+      }
+    }
+
+    // ─── Render detail ─────────────────────────────────────────
+    function renderDetail(p) {
+      document.title = `${p.name} — sepatuzibrud`;
+
+      // Images
+      const mainImg = document.getElementById('mainImage');
+      mainImg.src = p.images[0];
+      mainImg.alt = p.name;
+
+      const thumbGrid = document.getElementById('thumbGrid');
+      thumbGrid.innerHTML = p.images.map((img, i) => `
+        <div class="thumb ${i === 0 ? 'active' : ''}" onclick="changeImage('${img}', this)">
+          <img src="${img}" alt="${p.name} ${i+1}" loading="lazy"
+               onerror="this.src='https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=200&q=60'" />
+        </div>
+      `).join('');
+
+      // Info
+      document.getElementById('detailBrand').textContent = p.brand;
+      document.getElementById('detailName').textContent = p.name;
+      document.getElementById('detailPrice').textContent = formatPrice(p.price);
+      document.getElementById('detailDesc').textContent = p.description;
+
+      // Condition badge
+      document.getElementById('conditionBadge').innerHTML = `
+        <span class="condition-badge ${p.condition}">
+          <span style="width:8px;height:8px;border-radius:50%;background:${p.condition === 'baru' ? '#22c55e' : 'orange'}"></span>
+          Kondisi ${p.condition === 'baru' ? 'Baru' : 'Bekas'}
+        </span>
+      `;
+
+      // Sizes
+      document.getElementById('sizesGrid').innerHTML = p.sizes.map(s => `
+        <button class="size-btn" onclick="selectSize(this)">${s}</button>
+      `).join('');
+
+      // Sold out
+      if (p.status === 'sold_out') {
+        document.getElementById('soldOutBanner').style.display = 'flex';
+        document.getElementById('screenshotBtn').disabled = true;
+        document.getElementById('screenshotBtn').textContent = 'Produk Sold Out';
+      }
+
+      // WhatsApp direct link
+      const msg = encodeURIComponent(
+        `Halo admin, saya tertarik dengan sepatu ini:\n\n👟 *${p.name}*\n🏷️ Brand: ${p.brand}\n💰 Harga: ${formatPrice(p.price)}\n\nApakah masih tersedia? 🙏`
+      );
+      document.getElementById('waDirectBtn').href = `https://wa.me/${WHATSAPP_NUMBER}?text=${msg}`;
+
+      // Show content
+      document.getElementById('loadingState').style.display = 'none';
+      document.getElementById('productDetail').style.display = 'block';
+    }
+
+    // ─── Change main image ─────────────────────────────────────
+    function changeImage(src, thumbEl) {
+      document.getElementById('mainImage').src = src;
+      document.querySelectorAll('.thumb').forEach(t => t.classList.remove('active'));
+      thumbEl.classList.add('active');
+    }
+
+    // ─── Select size ───────────────────────────────────────────
+    function selectSize(btn) {
+      document.querySelectorAll('.size-btn').forEach(b => b.classList.remove('selected'));
+      btn.classList.add('selected');
+    }
+
+    // ─── Handle screenshot ─────────────────────────────────────
+    function handleScreenshot() {
+      if (!currentProduct) return;
+      takeScreenshotAndWhatsApp(
+        currentProduct.name,
+        formatPrice(currentProduct.price),
+        currentProduct.brand
+      );
+    }
+
+    // ─── Load related products ─────────────────────────────────
+    async function loadRelated(brand, currentId) {
+      try {
+        const res = await fetch(`/api/products`);
+        const all = await res.json();
+        const related = all.filter(p => p.brand === brand && p.id !== currentId).slice(0, 4);
+        if (related.length === 0) return;
+
+        document.getElementById('relatedSection').style.display = 'block';
+        document.getElementById('relatedGrid').innerHTML = related.map(p => renderCard(p)).join('');
+      } catch (e) { /* silent fail */ }
+    }
+
+    loadDetail();
+  </script>
+</body>
+</html>

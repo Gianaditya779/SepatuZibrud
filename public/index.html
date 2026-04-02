@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>sepatuzibrud — Premium Sneaker Store</title>
+  <meta name="description" content="Toko sepatu premium original dan terpercaya. Koleksi terlengkap dengan harga terbaik." />
+  <link rel="stylesheet" href="/css/style.css" />
+  <style>
+    /* ── Hero Section ── */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      padding: 0 5%;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 80% 60% at 70% 50%, rgba(255,255,255,0.04) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .hero-grid-lines {
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+      background-size: 60px 60px;
+      pointer-events: none;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      max-width: 600px;
+    }
+
+    .hero-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.1);
+      padding: 6px 14px;
+      border-radius: 100px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--gray-light);
+      margin-bottom: 28px;
+    }
+
+    .hero-eyebrow span {
+      width: 6px; height: 6px;
+      background: var(--green);
+      border-radius: 50%;
+      animation: pulse 2s infinite;
+    }
+
+    .hero-title {
+      font-size: clamp(3rem, 7vw, 5.5rem);
+      font-weight: 900;
+      letter-spacing: -3px;
+      line-height: 0.95;
+      margin-bottom: 24px;
+    }
+
+    .hero-title .line-gray { color: var(--gray-text); }
+
+    .hero-desc {
+      font-size: 1.05rem;
+      color: var(--gray-text);
+      line-height: 1.7;
+      margin-bottom: 40px;
+      max-width: 440px;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+
+    .hero-image {
+      position: absolute;
+      right: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 50%;
+      max-width: 700px;
+      pointer-events: none;
+    }
+
+    .hero-image img {
+      width: 100%;
+      animation: float 6s ease-in-out infinite;
+      filter: drop-shadow(0 40px 80px rgba(0,0,0,0.8));
+    }
+
+    .hero-stats {
+      display: flex;
+      gap: 40px;
+      margin-top: 60px;
+      padding-top: 40px;
+      border-top: 1px solid var(--gray-border);
+    }
+
+    .stat-item h3 {
+      font-size: 1.8rem;
+      font-weight: 800;
+      letter-spacing: -1px;
+    }
+
+    .stat-item p {
+      font-size: 0.8rem;
+      color: var(--gray-text);
+      margin-top: 2px;
+    }
+
+    /* ── Features Section ── */
+    .features-section {
+      padding: 100px 5%;
+      border-top: 1px solid var(--gray-border);
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2px;
+      margin-top: 60px;
+      border: 1px solid var(--gray-border);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+    }
+
+    .feature-item {
+      padding: 48px 40px;
+      background: var(--black-card);
+      transition: var(--transition);
+      position: relative;
+    }
+
+    .feature-item:hover { background: var(--gray-dark); }
+
+    .feature-icon {
+      width: 52px; height: 52px;
+      background: var(--gray-dark);
+      border: 1px solid var(--gray-border);
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.4rem;
+      margin-bottom: 24px;
+      transition: var(--transition);
+    }
+
+    .feature-item:hover .feature-icon {
+      background: var(--white);
+      border-color: var(--white);
+    }
+
+    .feature-item h3 {
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+
+    .feature-item p {
+      font-size: 0.875rem;
+      color: var(--gray-text);
+      line-height: 1.6;
+    }
+
+    /* ── Featured Products ── */
+    .featured-section { padding: 100px 5%; }
+
+    .section-header {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      margin-bottom: 48px;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+
+    /* ── CTA Section ── */
+    .cta-section {
+      margin: 0 5% 100px;
+      background: var(--white);
+      border-radius: var(--radius-xl);
+      padding: 80px 60px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 40px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .cta-section::before {
+      content: '';
+      position: absolute;
+      top: -50%; right: -10%;
+      width: 400px; height: 400px;
+      background: radial-gradient(circle, rgba(0,0,0,0.05) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .cta-content h2 {
+      font-size: clamp(1.8rem, 3vw, 2.5rem);
+      font-weight: 900;
+      color: var(--black);
+      letter-spacing: -1px;
+      margin-bottom: 12px;
+    }
+
+    .cta-content p {
+      color: #555;
+      font-size: 1rem;
+    }
+
+    .cta-actions { display: flex; gap: 12px; flex-wrap: wrap; }
+
+    .btn-black {
+      background: var(--black);
+      color: var(--white);
+      padding: 14px 32px;
+      border-radius: 100px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      transition: var(--transition);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-black:hover {
+      background: #222;
+      transform: translateY(-2px);
+    }
+
+    .btn-ghost-dark {
+      background: transparent;
+      color: var(--black);
+      border: 1px solid rgba(0,0,0,0.2);
+      padding: 14px 32px;
+      border-radius: 100px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      transition: var(--transition);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-ghost-dark:hover {
+      background: rgba(0,0,0,0.05);
+      transform: translateY(-2px);
+    }
+
+    @media (max-width: 1024px) {
+      .hero-image { width: 45%; }
+      .features-grid { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 768px) {
+      .hero { min-height: 100svh; padding-top: 100px; padding-bottom: 60px; }
+      .hero-image { display: none; }
+      .hero-title { font-size: clamp(2.5rem, 10vw, 4rem); }
+      .hero-stats { gap: 24px; }
+      .cta-section { flex-direction: column; padding: 48px 32px; }
+      .section-header { flex-direction: column; align-items: flex-start; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── Navbar ── -->
+  <nav class="navbar" id="navbar">
+    <a href="/" class="nav-logo">
+      <img src="/fotologosepatu.png" alt="Logo SepatuZibrud" style="width:38px;height:38px;object-fit:cover;border-radius:50%;border:2px solid rgba(255,255,255,0.15);" />
+      <span>sepatuzibrud</span><span class="dot">.</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="/" class="active">Home</a></li>
+      <li><a href="/catalog.html">Catalog</a></li>
+      <li><a href="/about.html">About</a></li>
+      <li><a href="/contact.html">Contact</a></li>
+      <li><a href="/admin.html">Admin</a></li>
+      <li><a href="/catalog.html" class="nav-cta">Lihat Koleksi</a></li>
+    </ul>
+    <div class="hamburger" id="hamburger" aria-label="Menu" role="button" tabindex="0">
+      <span></span><span></span><span></span>
+    </div>
+  </nav>
+
+  <!-- ── Mobile Nav ── -->
+  <div class="mobile-nav" id="mobileNav">
+    <a href="/">Home</a>
+    <a href="/catalog.html">Catalog</a>
+    <a href="/about.html">About</a>
+    <a href="/contact.html">Contact</a>
+    <a href="/admin.html">Admin</a>
+    <a href="/catalog.html" class="nav-cta" style="text-align:center; border-radius:100px; padding:12px 24px; background:var(--white); color:var(--black);">Lihat Koleksi</a>
+  </div>
+
+  <!-- ── Hero ── -->
+  <section class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-grid-lines"></div>
+
+    <div class="hero-content">
+      <div class="hero-eyebrow animate-fade-up">
+        <span></span> Koleksi Terbaru 2025
+      </div>
+      <h1 class="hero-title animate-fade-up animate-fade-up-delay-1">
+        Step Into<br>
+        <span class="line-gray">Your Style</span>
+      </h1>
+      <p class="hero-desc animate-fade-up animate-fade-up-delay-2">
+        Temukan koleksi sepatu premium original pilihan. Dari sneakers ikonik hingga lifestyle shoes terkini — semua ada di sini.
+      </p>
+      <div class="hero-actions animate-fade-up animate-fade-up-delay-3">
+        <a href="/catalog.html" class="btn btn-primary">
+          Lihat Koleksi Sepatu
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
+        <a href="/about.html" class="btn btn-outline">Tentang Kami</a>
+      </div>
+
+      <div class="hero-stats animate-fade-up animate-fade-up-delay-4">
+        <div class="stat-item">
+          <h3>5
+            
+            0+</h3>
+          <p>Koleksi Sepatu</p>
+        </div>
+        <div class="stat-item">
+          <h3>100%</h3>
+          <p>Original</p>
+        </div>
+        <div class="stat-item">
+          <h3>5★</h3>
+          <p>Rating Toko</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="hero-image">
+      <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=800&q=80" alt="Featured Sneaker" loading="eager" />
+    </div>
+  </section>
+
+  <!-- ── Features ── -->
+  <section class="features-section">
+    <div class="section-label">Kenapa Kami</div>
+    <h2 class="section-title">Toko Sepatu<br>Terpercaya</h2>
+
+    <div class="features-grid">
+      <div class="feature-item">
+        <div class="feature-icon">✓</div>
+        <h3>100% Original</h3>
+        <p>Semua produk kami dijamin original dengan garansi keaslian. Tidak ada barang KW atau replika.</p>
+      </div>
+      <div class="feature-item">
+        <div class="feature-icon">↻</div>
+        <h3>Update Koleksi</h3>
+        <p>Koleksi kami selalu diperbarui setiap minggu mengikuti tren terbaru dari brand-brand ternama dunia.</p>
+      </div>
+      <div class="feature-item">
+        <div class="feature-icon">⚡</div>
+        <h3>Pengiriman Cepat</h3>
+        <p>Pengiriman ke seluruh Indonesia dengan layanan ekspres. Pesanan diproses dalam 1x24 jam.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Featured Products ── -->
+  <section class="featured-section">
+    <div class="section-header">
+      <div>
+        <div class="section-label">Produk Unggulan</div>
+        <h2 class="section-title">Koleksi Terpilih</h2>
+      </div>
+      <a href="/catalog.html" class="btn btn-outline">
+        Lihat Semua
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+    </div>
+
+    <div class="products-grid" id="featuredGrid">
+      <!-- Skeleton loading -->
+      <div class="skeleton-card"><div class="skeleton-img"></div><div class="skeleton-body"><div class="skeleton-line short"></div><div class="skeleton-line medium"></div><div class="skeleton-line short"></div></div></div>
+      <div class="skeleton-card"><div class="skeleton-img"></div><div class="skeleton-body"><div class="skeleton-line short"></div><div class="skeleton-line medium"></div><div class="skeleton-line short"></div></div></div>
+      <div class="skeleton-card"><div class="skeleton-img"></div><div class="skeleton-body"><div class="skeleton-line short"></div><div class="skeleton-line medium"></div><div class="skeleton-line short"></div></div></div>
+      <div class="skeleton-card"><div class="skeleton-img"></div><div class="skeleton-body"><div class="skeleton-line short"></div><div class="skeleton-line medium"></div><div class="skeleton-line short"></div></div></div>
+    </div>
+  </section>
+
+  <!-- ── CTA ── -->
+  <div class="cta-section">
+    <div class="cta-content">
+      <h2>Temukan Sepatu Impianmu</h2>
+      <p>Hubungi kami langsung via WhatsApp untuk info stok dan harga terbaik.</p>
+    </div>
+    <div class="cta-actions">
+      <a href="https://wa.me/6281234567890?text=Halo%20admin%2C%20saya%20ingin%20tanya%20tentang%20koleksi%20sepatu" target="_blank" class="btn-black">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        Chat WhatsApp
+      </a>
+      <a href="/catalog.html" class="btn-ghost-dark">Lihat Katalog</a>
+    </div>
+  </div>
+
+  <!-- ── Footer ── -->
+  <footer class="footer">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="nav-logo" style="font-size:1.4rem">
+          <span>SepatuZibrud</span><span class="dot">.</span>
+        </div>
+        <p>Toko sepatu premium original terpercaya. Koleksi terlengkap dengan harga terbaik dan pelayanan terbaik.</p>
+        <div class="social-links" style="margin-top:20px">
+          <a href="https://instagram.com" target="_blank" class="social-link" aria-label="Instagram">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+          </a>
+          <a href="https://wa.me/6281234567890" target="_blank" class="social-link" aria-label="WhatsApp">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          </a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Navigasi</h4>
+        <a href="/">Home</a>
+        <a href="/catalog.html">Catalog</a>
+        <a href="/about.html">About</a>
+        <a href="/contact.html">Contact</a>
+    <a href="/admin.html">Admin</a>
+      </div>
+      <div class="footer-col">
+        <h4>Brand</h4>
+        <a href="/catalog.html?brand=Nike">Nike</a>
+        <a href="/catalog.html?brand=Adidas">Adidas</a>
+        <a href="/catalog.html?brand=Jordan">Jordan</a>
+        <a href="/catalog.html?brand=Vans">Vans</a>
+      </div>
+      <div class="footer-col">
+        <h4>Kontak</h4>
+        <a href="https://wa.me/6281234567890" target="_blank">WhatsApp</a>
+        <a href="https://instagram.com" target="_blank">Instagram</a>
+        <a href="mailto:sole@email.com">Email</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2025 SOsepatuzibrudLE. All rights reserved.</p>
+      <p>Made with ♥ in Indonesia</p>
+    </div>
+  </footer>
+
+  <script src="/js/script.js"></script>
+  <script>
+    // Load featured products (max 4)
+    async function loadFeatured() {
+      try {
+        const res = await fetch('/api/products?status=available');
+        const products = await res.json();
+        const grid = document.getElementById('featuredGrid');
+        grid.innerHTML = '';
+        products.slice(0, 4).forEach(p => {
+          grid.innerHTML += renderCard(p);
+        });
+      } catch (e) {
+        console.error('Gagal memuat produk:', e);
+      }
+    }
+    loadFeatured();
+  </script>
+</body>
+</html>
