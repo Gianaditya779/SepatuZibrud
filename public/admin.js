@@ -3,7 +3,6 @@
  * Database: Google Sheets via Apps Script
  */
 
-const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzbF817Nkla1EGEtd39u9aPKC1fTgy05FLrWuuR9TmonhAXTiC80yfO-u-isZV98Uzc/exec';
 const ADMIN_PASSWORD = 'admin123';
 
 let adminToken = localStorage.getItem('sepatuzibrud_admin_token') || null;
@@ -18,7 +17,7 @@ async function apiGet(params = {}) {
 }
 
 async function apiPost(data) {
-  const res = await fetch(APPS_SCRIPT_URL, {
+  await fetch(APPS_SCRIPT_URL, {
     method: 'POST',
     mode: 'no-cors',
     headers: { 'Content-Type': 'application/json' },
