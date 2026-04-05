@@ -469,11 +469,10 @@
     // Load featured products (max 4)
     async function loadFeatured() {
       try {
-        const res = await fetch('/api/products?status=available');
-        const products = await res.json();
+        const products = await apiGet({ action: 'getAll' });
         const grid = document.getElementById('featuredGrid');
         grid.innerHTML = '';
-        products.slice(0, 4).forEach(p => {
+        products.filter(p => p.status === 'available').slice(0, 4).forEach(p => {
           grid.innerHTML += renderCard(p);
         });
       } catch (e) {

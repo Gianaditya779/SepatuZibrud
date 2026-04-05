@@ -1,10 +1,27 @@
 /**
  * script.js - Global JavaScript untuk Katalog Sepatu
- * Berisi: navbar, helper functions, product card renderer
+ * Database: Google Sheets via Apps Script
  */
 
 // ─── Config ───────────────────────────────────────────────────
-const WHATSAPP_NUMBER = '6281234567890'; // Ganti dengan nomor admin
+const WHATSAPP_NUMBER = '6281234567890';
+const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzbF817Nkla1EGEtd39u9aPKC1fTgy05FLrWuuR9TmonhAXTiC80yfO-u-isZV98Uzc/exec';
+
+// ─── API Helper ───────────────────────────────────────────────
+async function apiGet(params = {}) {
+  const url = new URL(APPS_SCRIPT_URL);
+  Object.entries(params).forEach(([k, v]) => url.searchParams.set(k, v));
+  const res = await fetch(url.toString());
+  return res.json();
+}
+
+async function apiPost(data) {
+  const res = await fetch(APPS_SCRIPT_URL, {
+    method: 'POST',
+    body: JSON.stringify(data)
+  });
+  return res.json();
+}
 
 // ─── Navbar scroll effect ─────────────────────────────────────
 const navbar = document.getElementById('navbar');

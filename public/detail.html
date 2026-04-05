@@ -362,13 +362,12 @@
     async function loadDetail() {
       const id = new URLSearchParams(window.location.search).get('id');
       if (!id) { window.location.href = '/catalog.html'; return; }
-
       try {
-        const res = await fetch(`/api/products/${id}`);
-        if (!res.ok) throw new Error('Not found');
-        currentProduct = await res.json();
-        renderDetail(currentProduct);
-        loadRelated(currentProduct.brand, id);
+        const p = await apiGet({ action: 'getOne', id });
+        if (!p) throw new Error('Not found');
+        currentProduct = p;
+        renderDetail(p);
+        loadRelated(p.brand, id);
       } catch (e) {
         document.getElementById('loadingState').innerHTML = `
           <p style="color:var(--gray-text)">Produk tidak ditemukan.</p>
@@ -457,11 +456,9 @@
     // ─── Load related products ─────────────────────────────────
     async function loadRelated(brand, currentId) {
       try {
-        const res = await fetch(`/api/products`);
-        const all = await res.json();
+        const all = await apiGet({ action: 'getAll' });
         const related = all.filter(p => p.brand === brand && p.id !== currentId).slice(0, 4);
         if (related.length === 0) return;
-
         document.getElementById('relatedSection').style.display = 'block';
         document.getElementById('relatedGrid').innerHTML = related.map(p => renderCard(p)).join('');
       } catch (e) { /* silent fail */ }

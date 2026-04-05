@@ -1,0 +1,9 @@
+{
+  "rewrites": [
+    { "source": "/catalog", "destination": "/public/catalog.html" },
+    { "source": "/detail", "destination": "/public/detail.html" },
+    { "source": "/about", "destination": "/public/about.html" },
+    { "source": "/contact", "destination": "/public/contact.html" },
+    { "source": "/admin", "destination": "/public/admin.html" }
+  ]
+}

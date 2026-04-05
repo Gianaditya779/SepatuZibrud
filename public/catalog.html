@@ -182,14 +182,14 @@
     // ─── Load products ────────────────────────────────────────
     async function loadProducts() {
       try {
-        const res = await fetch('/api/products');
-        allProducts = await res.json();
+        const products = await apiGet({ action: 'getAll' });
+        allProducts = products;
         applyFilters();
       } catch (e) {
         document.getElementById('productsGrid').innerHTML = `
           <div class="no-results" style="grid-column:1/-1">
             <h3>Gagal memuat produk</h3>
-            <p>Pastikan server berjalan dan coba refresh halaman.</p>
+            <p>Coba refresh halaman.</p>
           </div>`;
       }
     }

@@ -602,9 +602,9 @@
                 <textarea class="form-input" id="fieldDesc" placeholder="Deskripsi produk..."></textarea>
               </div>
               <div class="form-group form-full">
-                <label class="form-label">Upload Gambar (maks. 5 foto)</label>
-                <input type="file" class="form-input" id="fieldImages" accept="image/*" multiple onchange="previewImages(this)" />
-                <div class="img-preview-wrap" id="imgPreviewWrap"></div>
+                <label class="form-label">URL Gambar Sepatu *</label>
+                <input type="url" class="form-input" id="fieldImageUrl" placeholder="https://contoh.com/gambar.jpg" />
+                <div id="imgPreviewWrap" style="margin-top:10px"></div>
               </div>
               <div class="form-group form-full" style="display:flex; gap:12px">
                 <button type="submit" class="btn-submit" id="submitBtn" style="flex:1">Simpan Produk</button>
