@@ -382,16 +382,16 @@
 
       // Images
       const mainImg = document.getElementById('mainImage');
-      mainImg.src = p.images[0];
+      mainImg.src = p.imageUrl || (p.images && p.images[0]) || '';
       mainImg.alt = p.name;
 
       const thumbGrid = document.getElementById('thumbGrid');
-      thumbGrid.innerHTML = p.images.map((img, i) => `
-        <div class="thumb ${i === 0 ? 'active' : ''}" onclick="changeImage('${img}', this)">
-          <img src="${img}" alt="${p.name} ${i+1}" loading="lazy"
-               onerror="this.src='https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=200&q=60'" />
+      const imgSrc = p.imageUrl || (p.images && p.images[0]) || '';
+      thumbGrid.innerHTML = `
+        <div class="thumb active" onclick="changeImage('${imgSrc}', this)">
+          <img src="${imgSrc}" alt="${p.name}" loading="lazy" />
         </div>
-      `).join('');
+      `;
 
       // Info
       document.getElementById('detailBrand').textContent = p.brand;

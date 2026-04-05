@@ -71,6 +71,8 @@ function formatPrice(price) {
 function renderCard(product) {
   const isSoldOut = product.status === 'sold_out';
   const isNew = product.condition === 'baru';
+  // Support both imageUrl (Sheets) and images array (local)
+  const imgSrc = product.imageUrl || (product.images && product.images[0]) || '';
   const sizesHtml = product.sizes.slice(0, 4).map(s =>
     `<span class="size-chip">${s}</span>`
   ).join('') + (product.sizes.length > 4 ? `<span class="size-chip">+${product.sizes.length - 4}</span>` : '');
@@ -79,7 +81,7 @@ function renderCard(product) {
     <div class="product-card" onclick="goToDetail('${product.id}')" role="button" tabindex="0"
          onkeydown="if(event.key==='Enter') goToDetail('${product.id}')">
       <div class="product-card-img">
-        <img src="${product.images[0]}" alt="${product.name}" loading="lazy"
+        <img src="${imgSrc}" alt="${product.name}" loading="lazy"
              onerror="this.src='https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400&q=60'" />
         ${isSoldOut ? `
           <div class="sold-overlay"><span>SOLD OUT</span></div>
