@@ -11,7 +11,10 @@ const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzbF817Nkla1EGE
 async function apiGet(params = {}) {
   const url = new URL(APPS_SCRIPT_URL);
   Object.entries(params).forEach(([k, v]) => url.searchParams.set(k, v));
-  const res = await fetch(url.toString());
+  const res = await fetch(url.toString(), {
+    redirect: 'follow',
+    method: 'GET'
+  });
   return res.json();
 }
 
